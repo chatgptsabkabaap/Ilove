@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Be My Valentine 💘</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  background: white;
+  border-radius: 25px;
+  padding: 16px;
+  width: 95%;
+  max-width: 430px;
+  text-align: center;
+  position: relative;
+  animation: pop 0.4s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.hidden { display: none; }
+
+button {
+  border: none;
+  padding: 12px 22px;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  position: relative;
+}
+
+#yes { background: #ff4d6d; color: white; }
+#no  { background: #ddd; position: absolute; }
+
+.message {
+  margin-top: 12px;
+  color: #ff4d6d;
+  font-weight: bold;
+}
+
+/* ===== PAGE 2 : KBC ===== */
+
+.kbc-stage {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  background: url("audio/kbc.jpeg") center/cover no-repeat;
+  border-radius: 20px;
+}
+
+.kbc-question {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%;
+  color: white;
+  font-weight: bold;
+  text-shadow: 2px 2px 6px black;
+}
+
+.options {
+  position: absolute;
+  bottom: 6%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 0 14px;
+}
+
+.option {
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 10px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.warning {
+  position: absolute;
+  top: 5%;
+  width: 100%;
+  text-align: center;
+  color: yellow;
+  font-weight: bold;
+  display: none;
+}
+
+/* ===== PAGE 3 ===== */
+
+.app-bg {
+  background: url("audio/bg.jpeg") center/cover no-repeat;
+  padding: 20px;
+  border-radius: 25px;
+}
+
+.app-card {
+  background: rgba(255,255,255,0.9);
+  border-radius: 20px;
+  padding: 16px;
+}
+
+.photo {
+  width: 200px;
+  height: 200px;
+  margin: auto;
+  border-radius: 20px;
+  background: url("audio/boy.jpeg") center/cover no-repeat;
+  border: 4px solid #ff4d6d;
+}
+
+.secret-btn {
+  margin-top: 16px;
+  background: #ff4d6d;
+  color: white;
+}
+
+/* ===== PAGE 4 ===== */
+
+.secret-card {
+  background: linear-gradient(135deg, #fff0f5, #ffe6eb);
+  border-radius: 25px;
+  padding: 22px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div class="card" id="page1">
+  <h1>Will you be my Valentine? 💘</h1><br>
+
+  <button id="yes" onclick="goToPage2()">YES 💕</button>
+  <button id="no" onclick="noClicked()">No 🙄</button>
+
+  <div class="message" id="noMsg"></div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="card hidden" id="page2">
+  <div class="kbc-stage">
+    <div class="warning" id="warning">😡 Prakriti is watching you 😡</div>
+
+    <div class="kbc-question">Who’s your Valentine? 💜</div>
+
+    <div class="options">
+      <div class="option wrong" onclick="wrongAnswer()">A: Fuckeeha</div>
+      <div class="option wrong" onclick="wrongAnswer()">B: Bhadwichodi</div>
+      <div class="option correct" onclick="rightAnswer()">C: Prakriti 💖</div>
+      <div class="option wrong" onclick="wrongAnswer()">D: Sugandha</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="card hidden" id="page3">
+  <div class="app-bg">
+    <div class="app-card">
+      <h3>💘 Valentine Status</h3>
+      <div class="photo"></div>
+      <p>
+        Status: Taken 😌<br>
+        Partner: Prakriti 💕<br>
+        Since: 10 October 2025
+      </p>
+      <button class="secret-btn" onclick="goToPage4()">💌 Tap for a secret</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="card hidden" id="page4">
+  <div class="secret-card">
+    <h3>💖 For You</h3>
+    <p>
+      I love you mera bauwa 💗<br><br>
+      Samay ke saath saath hamara bond bhot deep ho chuka hai.<br>
+      Ab koi kahi nahi jayega, kabhi bhi.<br><br>
+      Aapse milne ke pehle, I never felt love.<br><br>
+      I love you. UMMMMMMAHHHHH 💋<br><br>
+      — Yours, Pakiki 🌷
+    </p>
+  </div>
+</div>
+
+<!-- AUDIO -->
+<audio id="wrongSound" src="audio/mkb2.mp3"></audio>
+<audio id="kbcIntro" src="audio/amitabh.mp3" loop></audio>
+<audio id="sevenCrore" src="audio/7crore.mp3"></audio>
+<audio id="bgMusic" src="audio/music.mp3" loop></audio>
+
+<script>
+let noCount = 0;
+let wrongCount = 0;
+
+const noMessages = [
+  "How dare you 😠",
+  "This must be a mistake 😤",
+  "Don’t make me cry 🥺",
+  "LAST chance 😭"
+];
+
+function noClicked() {
+  noMsg.textContent = noMessages[noCount % noMessages.length];
+  noCount++;
+
+  const x = Math.random() * 250;
+  const y = Math.random() * 120;
+
+  no.style.left = x + "px";
+  no.style.top  = y + "px";
+}
+
+function goToPage2() {
+  page1.classList.add("hidden");
+  page2.classList.remove("hidden");
+  kbcIntro.play();
+}
+
+function wrongAnswer() {
+  wrongCount++;
+  warning.style.display = "block";
+  wrongSound.currentTime = 0;
+  wrongSound.play();
+
+  if (wrongCount >= 3) {
+    document.querySelectorAll(".wrong").forEach(o => o.style.display = "none");
+  }
+}
+
+function rightAnswer() {
+  kbcIntro.pause();
+  sevenCrore.play();
+  bgMusic.play(); // STARTS HERE
+
+  setTimeout(() => {
+    page2.classList.add("hidden");
+    page3.classList.remove("hidden");
+  }, 1500);
+}
+
+function goToPage4() {
+  page3.classList.add("hidden");
+  page4.classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
